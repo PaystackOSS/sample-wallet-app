@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  auth_code: MyString
+  last_4: MyString
+  brand: MyString
+  bank: MyString
+
+two:
+  auth_code: MyString
+  last_4: MyString
+  brand: MyString
+  bank: MyString

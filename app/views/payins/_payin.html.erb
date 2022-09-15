@@ -1,0 +1,14 @@
+<!-- render all payins -->
+<div id="<%= dom_id payin %>">
+    <tr>
+        <td class="col-1">
+            <%= payin.ref %>
+        </td>
+        <td class="col-1">
+            <%= number_to_currency(payin.amount/100, unit: "GHS ", separator: ".", delimiter: ",") %>
+        </td>
+        <td class="col-1">
+            <%= payin.date %>
+        </td>
+    </tr>
+</div>

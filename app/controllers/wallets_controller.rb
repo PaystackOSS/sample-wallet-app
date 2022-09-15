@@ -1,0 +1,102 @@
+class WalletsController < ApplicationController
+  before_action :set_wallet, only: %i[show edit update destroy]
+  before_action :set_user, only: :wallet_topup
+
+  # GET /wallets that belong to a user.
+  def index
+    @wallets = User.find(params[:user_id]).wallets
+  end
+
+  # GET /wallets/1 or /wallets/1.json
+  def show; end
+
+  # GET /wallets/new
+  def new
+    @wallet = Wallet.new
+  end
+
+  # Top up wallet using saved card.
+  def use_authorization
+    # Always store API keys in environment variables.
+    @paystack = Paystack.new(Rails.application.credentials.PAYSTACK_PUBLIC_KEY!,
+                             Rails.application.credentials.PAYSTACK_PRIVATE_KEY!)
+    @topup = PaystackTransactions.new(@paystack)
+    puts "USER --> #{params[:amount].to_i * 100}"
+    @result = @topup.chargeAuthorization(
+      email: @user.email,
+      amount: params[:amount].to_i * 100,
+      authorization: @user.cards.first
+    )
+  end
+
+  # Wallet topup
+  def wallet_topup
+    # Always store API keys in environment variables.
+    @paystack = Paystack.new(Rails.application.credentials.PAYSTACK_PUBLIC_KEY!,
+                             Rails.application.credentials.PAYSTACK_PRIVATE_KEY!)
+    @topup = PaystackTransactions.new(@paystack)
+    puts "USER --> #{params[:amount].to_i * 100}"
+    @result = @topup.initializeTransaction(
+      email: @user.email,
+      amount: params[:amount].to_i * 100 # Converting to the lowest currency unit.
+    )
+    redirect_to @result['data']['authorization_url'], allow_other_host: true
+  end
+
+  # GET /wallets/1/edit
+  def edit; end
+
+  # POST /wallets or /wallets.json
+  def create
+    @wallet = Wallet.new(wallet_params)
+
+    respond_to do |format|
+      if @wallet.save
+        format.html { redirect_to wallet_url(@wallet), notice: 'Wallet was successfully created.' }
+        format.json { render :show, status: :created, location: @wallet }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @wallet.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /wallets/1 or /wallets/1.json
+  def update
+    respond_to do |format|
+      if @wallet.update(wallet_params)
+        format.html { redirect_to wallet_url(@wallet), notice: 'Wallet was successfully updated.' }
+        format.json { render :show, status: :ok, location: @wallet }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @wallet.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /wallets/1 or /wallets/1.json
+  def destroy
+    @wallet.destroy
+
+    respond_to do |format|
+      format.html { redirect_to wallets_url, notice: 'Wallet was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_wallet
+    @wallet = Wallet.find(user_id: params[:user_id])
+  end
+
+  def set_user
+    @user = User.find(params[:user_id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def wallet_params
+    params.fetch(:wallet, {}).permit(:user_id)
+  end
+end

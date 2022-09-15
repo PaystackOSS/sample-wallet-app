@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @recipient %>
+
+<div>
+  <%= link_to "Edit this recipient", edit_recipient_path(@recipient) %> |
+  <%= link_to "Back to recipients", recipients_path %>
+
+  <%= button_to "Destroy this recipient", @recipient, method: :delete %>
+</div>

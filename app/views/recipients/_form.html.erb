@@ -1,0 +1,23 @@
+<%= form_with(url: user_recipients_path) do |form| %>
+  <% if recipient.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(recipient.errors.count, "error") %> prohibited this recipient from being saved:</h2>
+
+      <ul>
+        <% recipient.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= form.label :name, 'Name' %>
+  <%= form.text_field :name %>
+  <%= form.label :account, 'Account Number' %>
+  <%= form.text_field :account %>
+  <%= form.label :bank_code, 'Bank' %>
+  <!-- Ideally Should be a select field dropdown with the bank names from List banks endpoint.. -->
+  <%= form.text_field :bank_code %>
+  <div>
+    <%= form.submit 'Save Recipient' %>
+  </div>
+<% end %>

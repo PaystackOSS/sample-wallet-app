@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Wallets</h1>
+
+<div id="wallets">
+  <% @wallets.each do |wallet| %>
+    <%= render wallet %>
+    <p>
+    </p>
+  <% end %>
+</div>
+<!-- Erb comments? -->
+<%#= link_to "New wallet", new_wallet_path %>
+

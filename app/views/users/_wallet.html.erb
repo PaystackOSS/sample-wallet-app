@@ -1,0 +1,9 @@
+<div id="<%#= dom_id wallet %>">
+    <h5 class="card-title">
+      Welcome back <%= @user.name %>, <br>
+    </h5>
+    <p>
+      Your current balance is: <%= number_to_currency(@user.wallet.balance/100, unit: "GHS ", separator: ".", delimiter: ",") %>
+    </p>
+      <%= render "wallets/topup" %> 
+</div>

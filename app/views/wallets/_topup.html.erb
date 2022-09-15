@@ -1,0 +1,12 @@
+<%= form_with(url: user_wallet_topup_url(user_id: @user.id), data: { turbo: false }, remote: true) do |f| %>
+<div class="form-group">
+    <input type="number" class="form-control" name="amount" id="amount" placeholder="Amount topup" required> 
+</div>
+<hr>
+
+    <input type="submit" class="btn btn-primary" value="Top up">
+    <%= f.collection_select(@user.id, @user.cards.all, :auth_code, :last_4, 
+        { include_blank: 'Use saved card'}, 
+        {class: 'custom-select'}) 
+    %>
+<% end %>

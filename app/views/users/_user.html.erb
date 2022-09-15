@@ -1,0 +1,66 @@
+<div class="container-md">
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-6">
+            <div id="<%= dom_id user %>">
+    
+                <h3> Payins </h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-1">Ref</th>
+                            <th scope="col" class="col-1">Amount</th>
+                            <th scope="col" class="col-1">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%= render @user.payins %>
+                    </tbody>
+                </table>
+                <div id="payouts">
+                    <h3> Payouts </h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="col-1">Ref</th>
+                                <th scope="col" class="col-1">Amount</th>
+                                <th scope="col" class="col-1">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= render @user.payouts %>
+                        </tbody>
+                    </table>
+                    <%= link_to 'New Payout' , new_user_payout_path(@user) %>
+                </div>
+                
+                <div id="recipients">
+                    <h3> Recipients </h3>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col" class="col-1">#</th>
+                            <th scope="col"class="col-1">Name</th>
+                            <th scope="col" class="col-1">Recipient Code</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <%= render @user.recipients %>
+                        </tbody>
+                    </table>
+                    <%= link_to 'Add Recipient' , new_user_recipient_path(@user.id) %>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <%= render "wallet" %>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
